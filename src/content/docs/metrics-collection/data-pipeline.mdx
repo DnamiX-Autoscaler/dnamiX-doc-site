@@ -1,8 +1,8 @@
-import DocHeader from "@/components/docs/DocHeader"
-import DocSection from "@/components/docs/DocSection"
-import Diagram from "@/components/docs/Diagram"
-import StepFlow from "@/components/docs/StepFlow"
-import CodeBlock from "@/components/ui/CodeBlock"
+import DocHeader from "@/components/docs/DocHeader";
+import DocSection from "@/components/docs/DocSection";
+import Diagram from "@/components/docs/Diagram";
+import StepFlow from "@/components/docs/StepFlow";
+import CodeBlock from "@/components/ui/CodeBlock";
 
 <DocHeader
   title="Metrics Data Pipeline"
@@ -22,43 +22,53 @@ The pipeline extracts raw metrics from Prometheus, transforms them into synchron
 
 </DocSection> <DocSection id="diagram" title="ETL Pipeline Diagram">
 
-<Diagram src="/images/diagrams/metrics/etl-pipeline.png" title="DnamiX ETL Pipeline" description="Shows the full metrics journey from Prometheus query to ML-ready dataset." />
+<Diagram
+  src="/images/diagrams/metrics/etl-pipeline.png"
+  title="DnamiX ETL Pipeline"
+  description="Shows the full metrics journey from Prometheus query to ML-ready dataset."
+/>
 
 </DocSection> <DocSection id="flow" title="Pipeline Steps">
 
 <StepFlow
-steps={[
-{
-title: "Extract metrics",
-description: "Query Prometheus APIs for node, pod, application, and service mesh metrics.",
-code: "Prometheus HTTP API"
-},
-{
-title: "Clean raw metrics",
-description: "Remove missing values, invalid samples, and inconsistent fields.",
-code: "data_cleaner.py"
-},
-{
-title: "Align timestamps",
-description: "Convert metrics from different sources into common time windows.",
-code: "window_aggregator.py"
-},
-{
-title: "Build dependency graph",
-description: "Use Istio service mesh request flow to create a directed service graph.",
-code: "G_t = (V_t, E_t)"
-},
-{
-title: "Generate enriched features",
-description: "Compute centralities and stress index, then merge them with raw metrics.",
-code: "X̃(t) = [X(t), DC(t), BC(t), CC(t), EC(t)]"
-},
-{
-title: "Export dataset",
-description: "Save final features as CSV, JSONL, or serve through real-time backend APIs.",
-code: "metrics_dataset.csv"
-}
-]}
+  steps={[
+    {
+      title: "Extract metrics",
+      description:
+        "Query Prometheus APIs for node, pod, application, and service mesh metrics.",
+      code: "Prometheus HTTP API",
+    },
+    {
+      title: "Clean raw metrics",
+      description:
+        "Remove missing values, invalid samples, and inconsistent fields.",
+      code: "data_cleaner.py",
+    },
+    {
+      title: "Align timestamps",
+      description:
+        "Convert metrics from different sources into common time windows.",
+      code: "window_aggregator.py",
+    },
+    {
+      title: "Build dependency graph",
+      description:
+        "Use Istio service mesh request flow to create a directed service graph.",
+      code: "G_t = (V_t, E_t)",
+    },
+    {
+      title: "Generate enriched features",
+      description:
+        "Compute centralities and stress index, then merge them with raw metrics.",
+      code: "X̃(t) = [X(t), DC(t), BC(t), CC(t), EC(t)]",
+    },
+    {
+      title: "Export dataset",
+      description:
+        "Save final features as CSV, JSONL, or serve through real-time backend APIs.",
+      code: "metrics_dataset.csv",
+    },
+  ]}
 />
 
 </DocSection> <DocSection id="feature-vector" title="Feature Vector">

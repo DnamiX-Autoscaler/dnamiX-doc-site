@@ -1,8 +1,8 @@
-import DocHeader from "@/components/docs/DocHeader"
-import DocSection from "@/components/docs/DocSection"
-import Diagram from "@/components/docs/Diagram"
-import CodeBlock from "@/components/ui/CodeBlock"
-import Alert from "@/components/ui/Alert"
+import DocHeader from "@/components/docs/DocHeader";
+import DocSection from "@/components/docs/DocSection";
+import Diagram from "@/components/docs/Diagram";
+import CodeBlock from "@/components/ui/CodeBlock";
+import Alert from "@/components/ui/Alert";
 
 <DocHeader
   title="Stress Index"
@@ -63,7 +63,7 @@ cpu_n = clamp(cpu_percent / 100.0)
 mem_n = clamp(memory_percent / 100.0)
 io_n = clamp(io_percent / 100.0)
 
-return (0.4 * cpu_n) + (0.4 * mem_n) + (0.2 * io_n)`}
+return (0.4 _ cpu_n) + (0.4 _ mem_n) + (0.2 \* io_n)`}
 
 />
 
@@ -86,22 +86,23 @@ code={`def compute_topology_pressure(degree, betweenness, closeness, eigenvector
 return (degree + betweenness + closeness + eigenvector) / 4
 
 def compute_topology_aware_stress(base_stress, topology_pressure, topology_weight=0.2):
-return clamp((1 - topology_weight) * base_stress + topology_weight * topology_pressure)`}
+return clamp((1 - topology_weight) _ base_stress + topology_weight _ topology_pressure)`}
 />
 
 </DocSection>
 
 <DocSection id="interpretation" title="Interpretation">
 
-| Stress Index Range | Meaning |
-|---|---|
-| 0.00 - 0.30 | Low pressure |
-| 0.31 - 0.60 | Moderate pressure |
-| 0.61 - 0.80 | High pressure |
-| 0.81 - 1.00 | Critical pressure |
+| Stress Index Range | Meaning           |
+| ------------------ | ----------------- |
+| 0.00 - 0.30        | Low pressure      |
+| 0.31 - 0.60        | Moderate pressure |
+| 0.61 - 0.80        | High pressure     |
+| 0.81 - 1.00        | Critical pressure |
 
 </DocSection>
 
 <Alert type="success" title="Research Value">
-Stress Index gives the ML model a compact but meaningful workload pressure signal, improving predictive autoscaling decisions.
+  Stress Index gives the ML model a compact but meaningful workload pressure
+  signal, improving predictive autoscaling decisions.
 </Alert>
