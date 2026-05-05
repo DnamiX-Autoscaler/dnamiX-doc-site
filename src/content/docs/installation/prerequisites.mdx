@@ -1,0 +1,92 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import CodeBlock from "@/components/ui/CodeBlock"
+import Alert from "@/components/ui/Alert"
+
+<DocHeader
+  title="Prerequisites"
+  description="Required tools, cluster configuration, and application conditions before installing DnamiX."
+  tags={["Installation", "Kubernetes", "DevOps"]}
+/>
+
+<DocSection id="overview" title="Overview">
+
+Before installing DnamiX, your application must already be containerized and deployable in Kubernetes.
+
+DnamiX is added during the **DevOps production-readiness stage**, after the software engineering team has completed the microservices implementation.
+
+</DocSection>
+
+<DocSection id="required-tools" title="Required Tools">
+
+Install the following tools:
+
+- Docker
+- Kubernetes cluster: Docker Desktop, Kind, Minikube, AKS, EKS, or GKE
+- kubectl
+- Helm
+- Node.js and npm
+- Git
+- Istio CLI, if service mesh telemetry is enabled
+
+<CodeBlock
+  language="bash"
+  title="Verify tools"
+  code={`docker --version
+kubectl version --client
+helm version
+node -v
+npm -v
+git --version`}
+/>
+
+</DocSection>
+
+<DocSection id="cluster-requirements" title="Cluster Requirements">
+
+Your Kubernetes cluster should have:
+
+- At least one application namespace
+- Running microservice deployments
+- Kubernetes Services for each microservice
+- Proper service labels
+- Prometheus-compatible `/metrics` endpoints
+- Optional Istio sidecar injection for service mesh telemetry
+
+</DocSection>
+
+<DocSection id="service-labels" title="Required Service Labels">
+
+DnamiX discovers application services using Kubernetes labels.
+
+Example:
+
+<CodeBlock
+  language="yaml"
+  title="Recommended service labels"
+  code={`metadata:
+  labels:
+    app: order
+    environment: production`}
+/>
+
+<Alert type="warning" title="Important">
+Service labels must match the generated ServiceMonitor selector. If labels do not match, Prometheus will not scrape application metrics.
+</Alert>
+
+</DocSection>
+
+<DocSection id="metrics-endpoint" title="Metrics Endpoint Requirement">
+
+Each microservice should expose a Prometheus metrics endpoint.
+
+Recommended endpoint:
+
+<CodeBlock
+  language="bash"
+  code={`/metrics`}
+/>
+
+For Node.js services, DnamiX recommends using `prom-client`.
+
+</DocSection>

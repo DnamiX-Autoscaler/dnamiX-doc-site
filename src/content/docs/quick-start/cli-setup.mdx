@@ -1,0 +1,24 @@
+import DocHeader from "@/components/docs/DocHeader"
+import StepFlow from "@/components/docs/StepFlow"
+
+<DocHeader title="CLI Setup" />
+
+<StepFlow 
+  steps={[
+    {
+      title: "Install CLI",
+      description: "Install globally",
+      code: "npm install -g dinamix-cli"
+    },
+    {
+      title: "Initialize",
+      description: "Create config",
+      code: "dnx init"
+    },
+    {
+      title: "Deploy",
+      description: "Deploy system",
+      code: "dnx deploy"
+    }
+  ]}
+/>

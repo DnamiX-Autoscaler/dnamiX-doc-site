@@ -1,0 +1,47 @@
+import DocHeader from "@/components/docs/DocHeader";
+import DocSection from "@/components/docs/DocSection";
+import CodeBlock from "@/components/ui/CodeBlock";
+
+<DocHeader
+  title="Debug Guide"
+  description="Step-by-step debugging for DnamiX system."
+/>
+
+<DocSection id="step1" title="Step 1: Check Pods">
+
+<CodeBlock language="bash" code={`kubectl get pods -A`} />
+
+</DocSection>
+
+<DocSection id="step2" title="Step 2: Check Logs">
+
+<CodeBlock language="bash" code={`kubectl logs <pod-name> -n monitoring`} />
+
+</DocSection>
+
+<DocSection id="step3" title="Step 3: Check Prometheus">
+
+Open:
+
+````text
+http://localhost:9090/targets
+</DocSection> <DocSection id="step4" title="Step 4: Check API">
+
+<CodeBlock
+language="bash"
+code={curl http://localhost:8000/api/metrics/cluster}
+/>
+
+</DocSection> ```
+````
+
+</DocSection>
+
+<DocSection id="step4" title="Step 4: Check API">
+
+<CodeBlock
+  language="bash"
+  code={`curl http://localhost:8000/api/metrics/cluster`}
+/>
+
+</DocSection>

@@ -1,0 +1,24 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import CodeBlock from "@/components/ui/CodeBlock"
+
+<DocHeader title="Feature Engineering" />
+
+<DocSection id="features" title="Input Features">
+
+DnamiX uses enriched feature vector:
+
+<CodeBlock
+  language="text"
+  code={`X̃(t) = [CPU, MEM, IO, latency, error_rate, DC, BC, CC, EC, StressIndex]`}
+/>
+
+</DocSection>
+
+<DocSection id="window" title="Time Windowing">
+
+Time-series windows:
+
+```text
+t-5, t-4, t-3, t-2, t-1 → predict t+1
+</DocSection> ```

@@ -1,0 +1,106 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import Diagram from "@/components/docs/Diagram"
+import CodeBlock from "@/components/ui/CodeBlock"
+import Alert from "@/components/ui/Alert"
+
+<DocHeader
+  title="ServiceMonitor Configuration"
+  description="Register application /metrics endpoints so Prometheus can scrape service-level telemetry."
+  tags={["ServiceMonitor", "Prometheus Operator"]}
+/>
+
+<DocSection id="overview" title="Overview">
+
+A ServiceMonitor tells Prometheus:
+
+- Which namespace to scrape
+- Which Kubernetes Service labels to select
+- Which port to scrape
+- Which metrics path to call
+- How often to scrape
+
+</DocSection>
+
+<DocSection id="diagram" title="ServiceMonitor Discovery Flow">
+
+<Diagram
+  src="/images/diagrams/configuration/servicemonitor-discovery-flow.png"
+  title="ServiceMonitor Discovery Flow"
+  description="Shows how Prometheus discovers application services using labels and scrapes /metrics endpoints."
+/>
+
+</DocSection>
+
+<DocSection id="example" title="Example ServiceMonitor">
+
+<CodeBlock
+  language="yaml"
+  title="Order service monitor"
+  code={`apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: sm-order
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  namespaceSelector:
+    matchNames:
+      - ecommerce-prod
+  selector:
+    matchLabels:
+      app: order
+      environment: production
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s`}
+/>
+
+</DocSection>
+
+<DocSection id="service-match" title="Service Must Match Labels">
+
+Your Kubernetes Service should match the ServiceMonitor selector:
+
+<CodeBlock
+  language="yaml"
+  title="Kubernetes Service"
+  code={`apiVersion: v1
+kind: Service
+metadata:
+  name: order
+  namespace: ecommerce-prod
+  labels:
+    app: order
+    environment: production
+spec:
+  selector:
+    app: order
+    environment: production
+  ports:
+    - name: http
+      port: 3002
+      targetPort: 3002`}
+/>
+
+</DocSection>
+
+<DocSection id="debugging" title="Debugging ServiceMonitor Issues">
+
+Use these commands:
+
+<CodeBlock
+  language="bash"
+  code={`kubectl get servicemonitor -n monitoring
+kubectl describe servicemonitor sm-order -n monitoring
+kubectl get svc -n ecommerce-prod --show-labels
+kubectl get endpoints -n ecommerce-prod`}
+/>
+
+<Alert type="error" title="Common Issue">
+If Prometheus target is missing, usually the ServiceMonitor selector labels do not match the Kubernetes Service labels.
+</Alert>
+
+</DocSection>

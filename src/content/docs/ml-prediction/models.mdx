@@ -1,0 +1,27 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import CodeBlock from "@/components/ui/CodeBlock"
+
+<DocHeader title="Prediction Models" />
+
+<DocSection id="models" title="Supported Models">
+
+- Linear Regression
+- Random Forest
+- LSTM
+- XGBoost
+
+</DocSection>
+
+<DocSection id="output" title="Prediction Output">
+
+<CodeBlock
+  language="json"
+  code={`{
+  "service": "order",
+  "predicted_load": 0.78,
+  "recommended_replicas": 4
+}`}
+/>
+
+</DocSection>

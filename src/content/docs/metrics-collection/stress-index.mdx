@@ -1,0 +1,96 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import Diagram from "@/components/docs/Diagram"
+import CodeBlock from "@/components/ui/CodeBlock"
+import Alert from "@/components/ui/Alert"
+
+<DocHeader
+  title="Stress Index"
+  description="Composite workload pressure indicator used to represent service-level system stress."
+  tags={["StressIndex", "Feature Engineering", "Autoscaling"]}
+/>
+
+<DocSection id="overview" title="Overview">
+
+The Stress Index is a composite signal that combines multiple pressure indicators into one meaningful value.
+
+Instead of relying only on CPU or memory, DnamiX combines:
+
+- CPU pressure
+- Memory pressure
+- I/O pressure
+- Application pressure
+- Optional topology pressure
+
+</DocSection>
+
+<DocSection id="diagram" title="Stress Index Calculation Flow">
+
+<Diagram
+  src="/images/diagrams/metrics/stress-index-flow.png"
+  title="Stress Index Flow"
+  description="Shows how raw resource and application pressure values are normalized and combined into a composite stress score."
+/>
+
+</DocSection>
+
+<DocSection id="formula" title="Basic Formula">
+
+```text
+SI(t) = wc · CPU_n(t) + wm · MEM_n(t) + wi · IO_n(t)
+Where:
+
+CPU_n(t) = normalized CPU pressure
+MEM_n(t) = normalized memory pressure
+IO_n(t) = normalized I/O pressure
+wc + wm + wi = 1
+
+Recommended baseline:
+
+SI(t) = 0.4 · CPU_n(t) + 0.4 · MEM_n(t) + 0.2 · IO_n(t)
+</DocSection> <DocSection id="python" title="Python Implementation">
+
+<CodeBlock
+language="python"
+title="Stress Index calculation"
+code={`def clamp(value, min_value=0.0, max_value=1.0):
+return max(min_value, min(value, max_value))
+
+def compute_stress_index(cpu_percent, memory_percent, io_percent):
+cpu_n = clamp(cpu_percent / 100.0)
+mem_n = clamp(memory_percent / 100.0)
+io_n = clamp(io_percent / 100.0)
+
+return (0.4 * cpu_n) + (0.4 * mem_n) + (0.2 * io_n)`}
+
+/>
+
+</DocSection> <DocSection id="advanced-formula" title="Advanced Topology-Aware Formula">
+
+DnamiX can also include topology pressure:
+
+TSI(t) = SI(t) + wt · TP(t)
+
+Where:
+
+TP(t) = average(DC, BC, CC, EC)
+
+Example:
+
+<CodeBlock
+language="python"
+title="Topology-aware stress index"
+code={`def compute_topology_pressure(degree, betweenness, closeness, eigenvector):
+return (degree + betweenness + closeness + eigenvector) / 4
+
+def compute_topology_aware_stress(base_stress, topology_pressure, topology_weight=0.2):
+return clamp((1 - topology_weight) * base_stress + topology_weight * topology_pressure)`}
+/>
+
+</DocSection> <DocSection id="interpretation" title="Interpretation">
+Stress Index Range	Meaning
+0.00 - 0.30	Low pressure
+0.31 - 0.60	Moderate pressure
+0.61 - 0.80	High pressure
+0.81 - 1.00	Critical pressure
+</DocSection> <Alert type="success" title="Research Value"> Stress Index gives the ML model a compact but meaningful workload pressure signal, improving predictive autoscaling decisions. </Alert> ```

@@ -1,0 +1,109 @@
+.prose {
+  color: #cbd5e1;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: #f8fafc;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.prose h1 {
+  font-size: 3rem;
+  line-height: 1.05;
+}
+
+.prose h2 {
+  margin-top: 3rem;
+  font-size: 2rem;
+}
+
+.prose h3 {
+  margin-top: 2rem;
+  font-size: 1.35rem;
+}
+
+.prose p {
+  color: #cbd5e1;
+  line-height: 1.85;
+}
+
+.prose a {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.prose a:hover {
+  color: #93c5fd;
+}
+
+.prose ul,
+.prose ol {
+  color: #cbd5e1;
+}
+
+.prose li {
+  margin-top: 0.45rem;
+  margin-bottom: 0.45rem;
+}
+
+.prose code {
+  color: #93c5fd;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(51, 65, 85, 0.8);
+  padding: 0.15rem 0.4rem;
+  border-radius: 0.45rem;
+  font-size: 0.88em;
+}
+
+.prose pre {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #dbeafe;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid #1e293b;
+  border-radius: 1rem;
+}
+
+.prose th {
+  background: #0f172a;
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+.prose td,
+.prose th {
+  border-bottom: 1px solid #1e293b;
+  padding: 0.85rem 1rem;
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+.prose blockquote {
+  border-left-color: #2563eb;
+  background: rgba(30, 41, 59, 0.45);
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  color: #cbd5e1;
+}

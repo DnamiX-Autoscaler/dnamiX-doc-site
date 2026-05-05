@@ -1,0 +1,13 @@
+import DocHeader from "@/components/docs/DocHeader"
+import CodeBlock from "@/components/ui/CodeBlock"
+
+<DocHeader title="Metrics API" />
+
+<CodeBlock
+  language="text"
+  code={`GET /api/metrics/cluster
+GET /api/metrics/nodes
+GET /api/metrics/pods
+GET /api/metrics/apps
+GET /api/metrics/service-mesh`}
+/>

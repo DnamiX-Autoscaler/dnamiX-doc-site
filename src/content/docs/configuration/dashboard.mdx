@@ -1,0 +1,86 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import Diagram from "@/components/docs/Diagram"
+import CodeBlock from "@/components/ui/CodeBlock"
+
+<DocHeader
+  title="Dashboard Configuration"
+  description="Configure the DnamiX monitoring dashboard to visualize metrics, centralities, stress index, and scaling behavior."
+  tags={["Dashboard", "React", "Visualization"]}
+/>
+
+<DocSection id="overview" title="Overview">
+
+The DnamiX Dashboard provides a real-time interface for DevOps engineers and operators.
+
+It visualizes:
+
+- Cluster resource usage
+- Node-level metrics
+- Pod-level metrics
+- Application-level metrics
+- Service mesh traffic
+- Graph centrality behavior
+- Stress Index
+- Dataset export status
+- Scaling decisions
+- Anomaly scores
+
+</DocSection>
+
+<DocSection id="diagram" title="Dashboard Data Flow">
+
+<Diagram
+  src="/images/diagrams/configuration/dashboard-data-flow.png"
+  title="Dashboard Data Flow"
+  description="Shows how the dashboard fetches processed metrics from the DnamiX metrics collector backend."
+/>
+
+</DocSection>
+
+<DocSection id="env" title="Environment Configuration">
+
+<CodeBlock
+  language="env"
+  title=".env"
+  code={`VITE_DINAMIX_API_BASE_URL=http://localhost:8000
+VITE_DINAMIX_PROMETHEUS_URL=http://localhost:9090
+VITE_DINAMIX_ENVIRONMENT=production`}
+/>
+
+</DocSection>
+
+<DocSection id="api" title="Dashboard API Endpoints">
+
+<CodeBlock
+  language="text"
+  code={`GET /api/metrics/cluster
+GET /api/metrics/nodes
+GET /api/metrics/pods
+GET /api/metrics/apps
+GET /api/metrics/service-mesh
+GET /api/metrics/centralities
+GET /api/metrics/stress-index
+GET /api/dataset/latest
+GET /api/dataset/export`}
+/>
+
+</DocSection>
+
+<DocSection id="deployment" title="Dashboard Deployment">
+
+<CodeBlock
+  language="bash"
+  title="Build dashboard"
+  code={`npm install
+npm run build`}
+/>
+
+<CodeBlock
+  language="bash"
+  title="Docker build"
+  code={`docker build -t dinamix-dashboard:latest .
+docker push <registry>/dinamix-dashboard:latest`}
+/>
+
+</DocSection>

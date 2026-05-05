@@ -1,0 +1,57 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import CodeBlock from "@/components/ui/CodeBlock"
+import Alert from "@/components/ui/Alert"
+
+<DocHeader
+  title="Common Errors"
+  description="Frequent issues when deploying and running DnamiX."
+  tags={["Troubleshooting","Errors"]}
+/>
+
+<DocSection id="overview" title="Overview">
+
+This section lists the most common issues developers face when setting up DnamiX.
+
+</DocSection>
+
+<DocSection id="prometheus" title="Prometheus Targets Not Found">
+
+<Alert type="error" title="Problem">
+Targets do not appear in Prometheus UI.
+</Alert>
+
+Possible causes:
+
+- ServiceMonitor labels do not match Service labels
+- Wrong namespace
+- Metrics endpoint missing
+
+<CodeBlock language="bash" code={`kubectl get svc --show-labels`} />
+
+</DocSection>
+
+<DocSection id="metrics" title="No Metrics Data">
+
+<Alert type="warning" title="Problem">
+/metrics endpoint returns empty data
+</Alert>
+
+Fix:
+
+- Ensure prom-client is configured
+- Check middleware setup
+
+</DocSection>
+
+<DocSection id="istio" title="Istio Metrics Missing">
+
+<Alert type="error" title="Problem">
+No service mesh data
+</Alert>
+
+Fix:
+
+<CodeBlock language="bash" code={`kubectl label namespace ecommerce istio-injection=enabled`} />
+
+</DocSection>

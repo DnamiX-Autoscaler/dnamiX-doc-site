@@ -1,0 +1,61 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import Diagram from "@/components/docs/Diagram"
+import CodeBlock from "@/components/ui/CodeBlock"
+
+<DocHeader
+  title="Metrics Collection Overview"
+  description="Understand how DnamiX collects multi-layer telemetry from Kubernetes microservices."
+  tags={["Component 1", "Metrics", "Observability"]}
+/>
+
+<DocSection id="overview" title="Overview">
+
+The Metrics Collection component is the data foundation layer of DnamiX.
+
+It collects telemetry from:
+
+- Node layer
+- Pod/container layer
+- Application layer
+- Service mesh layer
+
+The purpose is to transform raw Kubernetes monitoring data into a structured, topology-aware, ML-ready dataset.
+
+</DocSection>
+
+<DocSection id="diagram" title="Metrics Collection Architecture">
+
+<Diagram
+  src="/images/diagrams/metrics/metrics-collection-overview.png"
+  title="Metrics Collection Architecture"
+  description="Shows how Prometheus, Node Exporter, cAdvisor, application /metrics endpoints, and Istio feed the DnamiX collector backend."
+/>
+
+</DocSection>
+
+<DocSection id="layers" title="Telemetry Layers">
+
+| Layer | Source | Example Metrics |
+|---|---|---|
+| Node | Node Exporter | CPU, memory, disk, network |
+| Pod | cAdvisor / kube-state-metrics | pod CPU, pod memory, restarts |
+| Application | prom-client | request rate, latency, error rate, queue length |
+| Service Mesh | Istio / Envoy | service-to-service traffic, request duration |
+
+</DocSection>
+
+<DocSection id="collector-api" title="Collector Backend APIs">
+
+<CodeBlock
+  language="text"
+  code={`GET /api/metrics/cluster
+GET /api/metrics/nodes
+GET /api/metrics/pods
+GET /api/metrics/apps
+GET /api/metrics/service-mesh
+GET /api/metrics/centralities
+GET /api/metrics/stress-index`}
+/>
+
+</DocSection>

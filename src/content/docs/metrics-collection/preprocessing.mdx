@@ -1,0 +1,111 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import Diagram from "@/components/docs/Diagram"
+import CodeBlock from "@/components/ui/CodeBlock"
+import Alert from "@/components/ui/Alert"
+
+<DocHeader
+  title="Data Preprocessing"
+  description="Clean, align, normalize, and prepare telemetry for predictive autoscaling models."
+  tags={["Preprocessing", "ML Dataset", "Feature Engineering"]}
+/>
+
+<DocSection id="overview" title="Overview">
+
+Raw Prometheus metrics are not directly suitable for machine learning.
+
+They may contain:
+
+- Missing samples
+- Different timestamps
+- Different sampling intervals
+- Noisy values
+- High-cardinality labels
+- Unnormalized scales
+
+DnamiX preprocessing transforms this data into consistent ML-ready rows.
+
+</DocSection>
+
+<DocSection id="diagram" title="Preprocessing Flow">
+
+<Diagram
+  src="/images/diagrams/metrics/preprocessing-flow.png"
+  title="Data Preprocessing Flow"
+  description="Shows cleaning, timestamp alignment, normalization, and feature merging stages."
+/>
+
+</DocSection>
+
+<DocSection id="cleaning" title="Cleaning">
+
+Cleaning removes unusable or invalid values.
+
+<CodeBlock
+  language="python"
+  title="Basic cleaning logic"
+  code={`def clean_value(value, default=0.0):
+    if value is None:
+        return default
+    if value == "NaN":
+        return default
+    return float(value)`}
+/>
+
+</DocSection>
+
+<DocSection id="alignment" title="Time Alignment">
+
+All metrics are aligned into common time windows.
+
+Example:
+
+<CodeBlock
+  language="text"
+  code={`15s window:
+10:00:00
+10:00:15
+10:00:30
+10:00:45`}
+/>
+
+This makes node, pod, app, and mesh metrics comparable at the same timestamp.
+
+</DocSection>
+
+<DocSection id="normalization" title="Normalization">
+
+Normalization converts metrics into similar numeric ranges.
+
+<CodeBlock
+  language="python"
+  title="Min-max normalization"
+  code={`def normalize(value, min_value, max_value):
+    if max_value == min_value:
+        return 0.0
+    return (value - min_value) / (max_value - min_value)`}
+/>
+
+</DocSection>
+
+<DocSection id="merging" title="Feature Merging">
+
+After cleaning and alignment, metrics are merged by:
+
+- timestamp
+- namespace
+- service name
+- pod name, when required
+
+<CodeBlock
+  language="text"
+  title="Final row example"
+  code={`timestamp,service,cpu,memory,latency,error_rate,degree,betweenness,closeness,eigenvector,stress_index
+2026-05-02T10:00:00Z,order,0.65,0.71,210,0.02,0.50,0.33,0.66,0.71,0.68`}
+/>
+
+</DocSection>
+
+<Alert type="info" title="Why preprocessing is important">
+ML models cannot produce reliable predictions if the telemetry data is incomplete, noisy, or not time-aligned.
+</Alert>

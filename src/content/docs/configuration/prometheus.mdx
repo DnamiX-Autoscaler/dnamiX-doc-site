@@ -1,0 +1,103 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import Diagram from "@/components/docs/Diagram"
+import CodeBlock from "@/components/ui/CodeBlock"
+import Alert from "@/components/ui/Alert"
+
+<DocHeader
+  title="Prometheus Configuration"
+  description="Configure Prometheus as the central metrics collection engine for DnamiX."
+  tags={["Prometheus", "Monitoring", "Metrics"]}
+/>
+
+<DocSection id="overview" title="Overview">
+
+Prometheus is the primary time-series database used by DnamiX.
+
+It collects:
+
+- Node-level metrics
+- Pod/container metrics
+- Application metrics
+- Istio service mesh telemetry
+- DnamiX component metrics
+
+</DocSection>
+
+<DocSection id="diagram" title="Prometheus Observability Flow">
+
+<Diagram
+  src="/images/diagrams/configuration/prometheus-observability-flow.png"
+  title="Prometheus Observability Flow"
+  description="Shows how Node Exporter, cAdvisor, application /metrics endpoints, and Istio telemetry flow into Prometheus."
+/>
+
+</DocSection>
+
+<DocSection id="values" title="kube-prometheus-stack Values">
+
+<CodeBlock
+  language="yaml"
+  title="01-kube-prom-stack-values.yaml"
+  code={`prometheus:
+  prometheusSpec:
+    scrapeInterval: 15s
+    evaluationInterval: 15s
+
+    serviceMonitorNamespaceSelector: {}
+    podMonitorNamespaceSelector: {}
+
+    serviceMonitorSelector:
+      matchLabels:
+        release: prometheus
+
+    podMonitorSelector:
+      matchLabels:
+        release: prometheus
+
+grafana:
+  enabled: true
+  adminPassword: admin
+  service:
+    type: ClusterIP
+
+prometheus-node-exporter:
+  hostRootFsMount:
+    enabled: false`}
+/>
+
+</DocSection>
+
+<DocSection id="why" title="Why This Configuration Matters">
+
+This configuration allows Prometheus to discover ServiceMonitors and PodMonitors from the monitoring namespace and scrape application metrics every 15 seconds.
+
+<Alert type="info" title="Windows Docker Desktop Note">
+The `hostRootFsMount.enabled: false` setting avoids mount propagation issues in Docker Desktop and Kind environments.
+</Alert>
+
+</DocSection>
+
+<DocSection id="promql" title="Useful PromQL Queries">
+
+<CodeBlock
+  language="promql"
+  title="Application request rate"
+  code={`sum(rate(http_requests_total[1m])) by (service_name)`}
+/>
+
+<CodeBlock
+  language="promql"
+  title="P95 latency"
+  code={`histogram_quantile(0.95,
+  sum(rate(http_request_duration_milliseconds_bucket[1m])) by (le, service_name)
+)`}
+/>
+
+<CodeBlock
+  language="promql"
+  title="Node CPU usage"
+  code={`100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)`}
+/>
+
+</DocSection>

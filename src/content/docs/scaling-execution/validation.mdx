@@ -1,0 +1,27 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import CodeBlock from "@/components/ui/CodeBlock"
+
+<DocHeader title="Validation Layer" />
+
+<DocSection id="validation" title="Validation Process">
+
+Before scaling:
+
+- Inject chaos
+- Measure latency
+- Check error rate
+
+</DocSection>
+
+<DocSection id="example" title="Validation Logic">
+
+<CodeBlock
+  language="python"
+  code={`if latency < threshold and error_rate < threshold:
+    approve_scaling()
+else:
+    reject_scaling()`}
+/>
+
+</DocSection>

@@ -1,0 +1,137 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import StepFlow from "@/components/docs/StepFlow"
+import CodeBlock from "@/components/ui/CodeBlock"
+import Alert from "@/components/ui/Alert"
+
+<DocHeader
+  title="dnx init"
+  description="Initialize DnamiX inside an existing Kubernetes microservice project."
+  tags={["CLI", "Initialization", "Configuration"]}
+/>
+
+<DocSection id="overview" title="Overview">
+
+`dnx init` creates the initial DnamiX configuration for your application.
+
+It collects deployment details such as:
+
+- Project name
+- Application namespace
+- Monitoring namespace
+- Services
+- Metrics endpoints
+- Prometheus configuration
+- Istio availability
+- Enabled DnamiX components
+
+</DocSection>
+
+<DocSection id="command" title="Command">
+
+<CodeBlock
+  language="bash"
+  title="Initialize DnamiX"
+  code={`dnx init`}
+/>
+
+</DocSection>
+
+<DocSection id="flow" title="Initialization Flow">
+
+<StepFlow
+  steps={[
+    {
+      title: "Read Kubernetes project details",
+      description: "DnamiX asks for namespace, service names, environment labels, and monitoring preferences.",
+      code: "dnx init"
+    },
+    {
+      title: "Generate configuration file",
+      description: "A .dinamix/dinamix.config.yaml file is generated inside the project.",
+      code: ".dinamix/dinamix.config.yaml"
+    },
+    {
+      title: "Generate Kubernetes manifests",
+      description: "DnamiX creates Prometheus, ServiceMonitor, PodMonitor, and Istio configuration files.",
+      code: ".dinamix/k8s/"
+    },
+    {
+      title: "Prepare component configuration",
+      description: "Metrics collector, dashboard, ML prediction, scaling executor, and anomaly detection configs are prepared.",
+      code: ".dinamix/collectors/"
+    }
+  ]}
+/>
+
+</DocSection>
+
+<DocSection id="sample-config" title="Generated Configuration Example">
+
+<CodeBlock
+  language="yaml"
+  title="dinamix.config.yaml"
+  code={`project:
+  name: ecommerce-app
+  namespace: ecommerce-prod
+  environment: production
+
+monitoring:
+  namespace: monitoring
+  prometheusRelease: prometheus
+  scrapeInterval: 15s
+
+services:
+  - name: auth
+    port: http
+    metricsPath: /metrics
+  - name: product
+    port: http
+    metricsPath: /metrics
+  - name: order
+    port: http
+    metricsPath: /metrics
+  - name: api-gateway
+    port: http
+    metricsPath: /metrics
+
+istio:
+  enabled: true
+  mtlsMode: PERMISSIVE
+
+features:
+  metricsCollector: true
+  graphCentrality: true
+  stressIndex: true
+  mlPrediction: true
+  scalingExecutor: true
+  anomalyDetection: true`}
+/>
+
+</DocSection>
+
+<DocSection id="generated-files" title="Generated Files">
+
+After initialization, DnamiX creates:
+
+<CodeBlock
+  language="text"
+  code={`.dinamix/
+├── dinamix.config.yaml
+├── k8s/
+│   ├── 00-monitoring-ns.yaml
+│   ├── 01-kube-prom-stack-values.yaml
+│   ├── 02-app-servicemonitors.yaml
+│   ├── 03-istio-servicemonitors.yaml
+│   └── 05-istio-peer-auth.yaml
+├── collectors/
+│   └── collector-config.yaml
+└── dashboard/
+    └── dashboard-config.yaml`}
+/>
+
+</DocSection>
+
+<Alert type="info" title="Recommended">
+Run `dnx init` from the root folder of the application deployment repository.
+</Alert>

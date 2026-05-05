@@ -1,0 +1,115 @@
+import DocHeader from "@/components/docs/DocHeader"
+import DocSection from "@/components/docs/DocSection"
+import CodeBlock from "@/components/ui/CodeBlock"
+import Alert from "@/components/ui/Alert"
+
+<DocHeader
+  title="Verify Installation"
+  description="Confirm that DnamiX has been correctly installed and is collecting metrics."
+  tags={["Verification", "Prometheus", "Dashboard"]}
+/>
+
+<DocSection id="overview" title="Overview">
+
+After deploying DnamiX, verify each layer separately:
+
+- Kubernetes resources
+- Prometheus scraping
+- Metrics collector backend
+- Dashboard frontend
+- Service mesh telemetry
+- Dataset generation
+
+</DocSection>
+
+<DocSection id="pods" title="Check Running Pods">
+
+<CodeBlock
+  language="bash"
+  code={`kubectl get pods -n monitoring
+kubectl get pods -n <application-namespace>`}
+/>
+
+Expected result:
+
+- Prometheus pod running
+- Grafana pod running
+- DnamiX metrics collector running
+- Application pods running
+
+</DocSection>
+
+<DocSection id="servicemonitors" title="Check ServiceMonitors">
+
+<CodeBlock
+  language="bash"
+  code={`kubectl get servicemonitor -n monitoring
+kubectl describe servicemonitor sm-order -n monitoring`}
+/>
+
+</DocSection>
+
+<DocSection id="prometheus-targets" title="Verify Prometheus Targets">
+
+Port-forward Prometheus:
+
+<CodeBlock
+  language="bash"
+  code={`kubectl port-forward svc/prometheus-kube-prometheus-prometheus -n monitoring 9090:9090`}
+/>
+
+Open:
+
+<CodeBlock
+  language="text"
+  code={`http://localhost:9090/targets`}
+/>
+
+<Alert type="success" title="Expected Result">
+Application services, Istio sidecars, node exporters, and cAdvisor targets should appear as UP.
+</Alert>
+
+</DocSection>
+
+<DocSection id="collector-api" title="Check Metrics Collector API">
+
+<CodeBlock
+  language="bash"
+  code={`curl http://localhost:8000/api/metrics/cluster
+curl http://localhost:8000/api/metrics/nodes
+curl http://localhost:8000/api/metrics/pods
+curl http://localhost:8000/api/metrics/centralities
+curl http://localhost:8000/api/metrics/stress-index`}
+/>
+
+</DocSection>
+
+<DocSection id="dashboard" title="Verify Dashboard">
+
+Port-forward dashboard service:
+
+<CodeBlock
+  language="bash"
+  code={`kubectl port-forward svc/dinamix-dashboard -n monitoring 3000:80`}
+/>
+
+Open:
+
+<CodeBlock
+  language="text"
+  code={`http://localhost:3000`}
+/>
+
+</DocSection>
+
+<DocSection id="dataset" title="Verify Dataset Generation">
+
+Check latest ML-ready dataset:
+
+<CodeBlock
+  language="bash"
+  code={`curl http://localhost:8000/api/dataset/latest
+curl http://localhost:8000/api/dataset/export`}
+/>
+
+</DocSection>
