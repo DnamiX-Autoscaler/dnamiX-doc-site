@@ -3,7 +3,7 @@ import { Menu, Search, Moon, ExternalLink } from "lucide-react";
 
 const Topbar = ({ onMenuClick }) => {
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl lg:pl-72">
+    <header className="sticky top-0 z-30 border-b border-slate-800 bg-[#1a1a1a] backdrop-blur-xl lg:pl-72">
       <div className="flex items-center justify-between h-16 px-4 md:px-8">
         <div className="flex items-center gap-3">
           <button

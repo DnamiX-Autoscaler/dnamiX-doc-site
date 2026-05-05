@@ -48,6 +48,8 @@ wc + wm + wi = 1
 Recommended baseline:
 
 SI(t) = 0.4 · CPU_n(t) + 0.4 · MEM_n(t) + 0.2 · IO_n(t)
+```
+
 </DocSection> <DocSection id="python" title="Python Implementation">
 
 <CodeBlock
@@ -87,10 +89,19 @@ def compute_topology_aware_stress(base_stress, topology_pressure, topology_weigh
 return clamp((1 - topology_weight) * base_stress + topology_weight * topology_pressure)`}
 />
 
-</DocSection> <DocSection id="interpretation" title="Interpretation">
-Stress Index Range	Meaning
-0.00 - 0.30	Low pressure
-0.31 - 0.60	Moderate pressure
-0.61 - 0.80	High pressure
-0.81 - 1.00	Critical pressure
-</DocSection> <Alert type="success" title="Research Value"> Stress Index gives the ML model a compact but meaningful workload pressure signal, improving predictive autoscaling decisions. </Alert> ```
+</DocSection>
+
+<DocSection id="interpretation" title="Interpretation">
+
+| Stress Index Range | Meaning |
+|---|---|
+| 0.00 - 0.30 | Low pressure |
+| 0.31 - 0.60 | Moderate pressure |
+| 0.61 - 0.80 | High pressure |
+| 0.81 - 1.00 | Critical pressure |
+
+</DocSection>
+
+<Alert type="success" title="Research Value">
+Stress Index gives the ML model a compact but meaningful workload pressure signal, improving predictive autoscaling decisions.
+</Alert>
